@@ -5,3 +5,4 @@ reflection
 context
 maths
 templating (didn't really make brain hurt but would be interesting to dive into more)
+array slice generics
