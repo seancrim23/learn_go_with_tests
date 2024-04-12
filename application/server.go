@@ -9,22 +9,26 @@ import (
 
 const jsonContentType = "application/json"
 
+// playerstore stores score info about players
 type PlayerStore interface {
 	GetPlayerScore(name string) int
 	RecordWin(name string)
 	GetLeague() []Player
 }
 
+// http interface for player info
 type PlayerServer struct {
 	store PlayerStore
 	http.Handler
 }
 
+// stores a name with number of wins
 type Player struct {
 	Name string
 	Wins int
 }
 
+// creates a PlayerServer with routing configured
 func NewPlayerServer(store PlayerStore) *PlayerServer {
 	p := new(PlayerServer)
 
