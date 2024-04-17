@@ -1,4 +1,4 @@
-package main
+package poker
 
 // need to make the actual player store
 // i assume in a production setting this would be implemented as the database portion

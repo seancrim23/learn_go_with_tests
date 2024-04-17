@@ -1,4 +1,4 @@
-package main
+package poker
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 
 // stubbing seems to be the way to go when mocking behavior
 // stubs create test scoped data rather than having to pull from actual data
-type StubPlayerStore struct {
+/*type StubPlayerStore struct {
 	scores   map[string]int
 	winCalls []string
 	league   League
@@ -25,7 +25,7 @@ func (s *StubPlayerStore) GetPlayerScore(name string) int {
 
 func (s *StubPlayerStore) RecordWin(name string) {
 	s.winCalls = append(s.winCalls, name)
-}
+}*/
 
 func TestGETPlayers(t *testing.T) {
 	store := StubPlayerStore{
@@ -86,13 +86,7 @@ func TestStoreWins(t *testing.T) {
 
 		assertStatus(t, response.Code, http.StatusAccepted)
 
-		if len(store.winCalls) != 1 {
-			t.Fatalf("got %d calls to RecordWin want %d", len(store.winCalls), 1)
-		}
-
-		if store.winCalls[0] != player {
-			t.Errorf("did not store correct winner got %q want %q", store.winCalls[0], player)
-		}
+		assertPlayerWin(t, &store, player)
 	})
 }
 
@@ -179,9 +173,9 @@ func TestRecordingWinsAndRetrievingThem(t *testing.T) {
 	})
 }
 
-func (s *StubPlayerStore) GetLeague() League {
+/*func (s *StubPlayerStore) GetLeague() League {
 	return s.league
-}
+}*/
 
 func newPostWinRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/players/%s", name), nil)
@@ -211,5 +205,17 @@ func assertContentType(t testing.TB, response *httptest.ResponseRecorder, want s
 	t.Helper()
 	if response.Result().Header.Get("content-type") != want {
 		t.Errorf("response did not have content-type of %s, got %v", want, response.Result().Header)
+	}
+}
+
+func assertPlayerWin(t testing.TB, store *StubPlayerStore, winner string) {
+	t.Helper()
+
+	if len(store.winCalls) != 1 {
+		t.Fatalf("got %d calls to RecordWin want %d", len(store.winCalls), 1)
+	}
+
+	if store.winCalls[0] != winner {
+		t.Errorf("did not store correct winner got %q want %q", store.winCalls[0], winner)
 	}
 }
