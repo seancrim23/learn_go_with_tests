@@ -1,5 +1,8 @@
 # learn_go_with_tests
 
+# followed all of the sections from this link
+# https://quii.gitbook.io/learn-go-with-tests
+
 sections probably worth going over multiple times (bc they made my brain hurt):
 reflection
 context
